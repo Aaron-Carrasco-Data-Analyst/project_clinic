@@ -1,21 +1,29 @@
-from src.extract import extract_data
-from src.transform import transform_data
-from src.extract import load_data
+import logging
+from datetime import datetime, timedelta
+from src.extract import extract_to_bronze
+from src.transform import transform_to_silver
+from src.load import load_to_dw
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 def main():
-    print("🚀 Iniciando ETL...")
+    logger.info("🚀 Iniciando ETL desde src/main.py ...")
+
+    # Definir fecha_desde: ayer
+    fecha_desde = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
+    logger.info("Extrayendo datos desde %s", fecha_desde)
 
     # Extract
-    df_raw = extract_data()
-    print(f"Datos extraídos: {len(df_raw)} registros")
+    extract_to_bronze(fecha_desde)
 
     # Transform
-    df_clean = transform_data(df_raw)
-    print(f"Datos transformados: {len(df_clean)} registros")
+    transform_to_silver()
 
     # Load
-    load_data(df_clean)
-    print("✅ ETL finalizado con éxito")
+    load_to_dw()
+
+    logger.info("✅ ETL finalizado con éxito")
 
 if __name__ == "__main__":
     main()

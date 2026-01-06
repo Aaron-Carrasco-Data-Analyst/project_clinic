@@ -1,56 +1,65 @@
-#  Proyecto ETL con Python y SQL Server
+## Proyecto ETL – Clínica San Felipe
 
-##  Objetivo
-Construir un **pipeline de datos** que permita ingerir información desde una base de datos **OLTP (transaccional)** hacia una base de datos de destino optimizada para **Data Warehouse (DW)**, siguiendo el modelo **Kimball (estrella)**.  
+Este proyecto implementa un flujo **ETL** completo para mover datos desde un sistema OLTP hacia un Data Warehouse (DW), siguiendo las capas **Bronze → Silver → Staging → Fact**.
 
-Este proyecto busca demostrar cómo implementar un flujo **ETL (Extract, Transform, Load)** usando **Python** y **SQL Server**, con posibilidad de extender hacia herramientas de BI como **Power BI** o **Excel** mediante cubos OLAP.
+### Arquitectura del proceso
 
----
+1. **Extract (Bronze)**  
+   - Se conecta a la base de datos OLTP (`PRUEBA_OLTP`).  
+   - Extrae las tablas `pacientes`, `medicos`, `diagnosticos` y `atenciones`.  
+   - Los datos se guardan en formato Parquet en `data/bronze/`.  
+   - Se puede limitar la extracción con un parámetro `fecha_desde` para traer solo registros recientes de `atenciones`.
 
-## Estructura de Carpetas
+2. **Transform (Silver)**  
+   - Limpieza y validación de datos.  
+   - Generación de dimensiones:  
+     - `dim_pacientes` (validación de fechas, derivación de edad y grupo etario).  
+     - `dim_medicos` (normalización de nombres y especialidades).  
+     - `dim_diagnosticos` (códigos CIE10 y descripciones).  
+     - `dim_calendario` (atributos de fecha: año, mes, semana, día, trimestre).  
+   - Transformación de `atenciones` enriquecida con **códigos de negocio** (`codigo_paciente`, `codigo_medico`, `codigo_cie10`).  
+   - Los resultados se guardan en `data/silver/`.
 
+3. **Load (Staging → DW)**  
+   - Se cargan las tablas Silver hacia el esquema `temporal` en el DW (`PRUEBA`).  
+   - Se insertan las dimensiones en `diagnosticos_clinica`.  
+   - Se realiza la carga incremental de la fact `fact_auditoria_medica`, evitando duplicados mediante `LEFT JOIN`.  
+   - La fact utiliza surrogate keys del DW y conserva trazabilidad con los códigos de negocio.
 
----
+### Organización del código
 
-## Arquitectura
-- **Origen de datos**: Base OLTP (transaccional).
-- **Destino**: SQL Server optimizado para DW.
-- **Modelo de datos**: Kimball (estrella).
-- **Stack tecnológico**:
-  - Python (ETL principal).
-  - SQL Server (motor de base de datos).
+- `src/extract.py` → extracción desde OLTP a Bronze.  
+- `src/transform.py` → transformación de Bronze a Silver.  
+- `src/load.py` → carga de Silver a Staging y DW.  
+- `src/conexion_sql.py` → clase de conexión a SQL Server.  
+- `src/main.py` → orquestador del ETL (ejecuta Extract → Transform → Load).
 
+### Ejecución
 
----
-
-## ⚙️ Flujo ETL
-1. **Extract**: Conexión a la base OLTP y extracción de tablas relevantes.
-2. **Transform**: Limpieza, normalización y modelado de datos según esquema estrella.
-3. **Load**: Inserción en SQL Server DW optimizado.
-4. **Reporting**: Generación de vistas y conexión OLAP para análisis.
-
----
-
-## Ejemplo de Modelo Estrella
-| Tabla Fáctica | Tablas Dimensión |
-|---------------|------------------|
-| FactVentas    | DimCliente       |
-|               | DimProducto      |
-|               | DimTiempo        |
-|               | DimSucursal      |
-
----
-
-## 🚦 Requisitos
-- Python 3.9+
-- Librerías: `pyodbc`, `pandas`, `sqlalchemy`
-- SQL Server (on-premise)
-- Opcional: Visual Studio + SSIS, Power BI
-
----
-
-## 🔧 Instalación
-1. Clonar el repositorio:
+1. Activar el entorno virtual:
    ```bash
-   git clone https://github.com/usuario/etl_project.git
-   cd etl_project
+   env\Scripts\activate      # Windows
+   ```
+
+2. Ejecutar el ETL completo:
+   ```bash
+   python -m src.main
+   ```
+
+3. Ejemplo de log esperado:
+   ```
+   [INFO] __main__: Iniciando ETL desde src/main.py ...
+   [INFO] __main__: Extrayendo datos desde 2025-01-06
+   [INFO] src.extract: atenciones guardado en Bronze (55 filas)
+   [INFO] src.transform: Dim_Calendario generada y guardada en Silver (50 filas)
+   [INFO] src.load: Tabla staging temporal.stg_atenciones cargada (55 filas)
+   [INFO] __main__: ETL finalizado con éxito
+   ```
+
+### Notas
+
+- El parámetro `fecha_desde` en `extract_to_bronze` permite limitar la extracción de atenciones.  
+- Se recomienda ejecutar el ETL diariamente con `fecha_desde = hoy - 1` para procesar solo los registros nuevos.  
+- El logging está configurado para mostrar cada paso con número de filas procesadas.
+
+---
