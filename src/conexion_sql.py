@@ -48,3 +48,5 @@ class ConexionSQL:
             conn.execute(text("SELECT 1"))
         self.logger.info("Conexión establecida con %s (%s)", self.tipo, bbdd)
         return self.engine
+    
+print("Hola")
