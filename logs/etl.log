@@ -185,3 +185,64 @@
 2026-01-06 01:40:41,924 [INFO] src.conexion_sql: Conexión cerrada correctamente.
 2026-01-06 01:40:41,924 [INFO] src.load: Carga incremental finalizada correctamente.
 2026-01-06 01:40:41,924 [INFO] __main__: ✅ ETL finalizado con éxito
+2026-01-06 02:03:59,727 [INFO] __main__: Iniciando ETL desde src/main.py ...
+2026-01-06 02:03:59,727 [INFO] __main__: Extrayendo datos desde 2026-01-05
+2026-01-06 02:03:59,981 [INFO] src.connect: Conexión establecida con oltp (PRUEBA_OLTP)
+2026-01-06 02:03:59,997 [INFO] src.connect: Query ejecutado y DataFrame generado (10 filas)
+2026-01-06 02:04:00,020 [INFO] src.extract: pacientes guardado en Bronze (10 filas)
+2026-01-06 02:04:00,030 [INFO] src.connect: Query ejecutado y DataFrame generado (5 filas)
+2026-01-06 02:04:00,032 [INFO] src.extract: medicos guardado en Bronze (5 filas)
+2026-01-06 02:04:00,035 [INFO] src.connect: Query ejecutado y DataFrame generado (10 filas)
+2026-01-06 02:04:00,037 [INFO] src.extract: diagnosticos guardado en Bronze (10 filas)
+2026-01-06 02:04:00,041 [INFO] src.connect: Query ejecutado y DataFrame generado (2 filas)
+2026-01-06 02:04:00,044 [INFO] src.extract: atenciones guardado en Bronze (2 filas)
+2026-01-06 02:04:00,045 [INFO] src.connect: Conexión cerrada correctamente.
+2026-01-06 02:04:00,045 [INFO] src.extract: Extracción a Bronze finalizada correctamente.
+2026-01-06 02:04:00,071 [INFO] src.transform: Pacientes cargados desde Bronze (10 filas)
+2026-01-06 02:04:00,083 [INFO] src.transform: Dim_Pacientes transformada y guardada en Silver (10 filas)
+2026-01-06 02:04:00,087 [INFO] src.transform: Medicos cargados desde Bronze (5 filas)
+2026-01-06 02:04:00,093 [INFO] src.transform: Dim_Medicos transformada y guardada en Silver (5 filas)
+2026-01-06 02:04:00,099 [INFO] src.transform: Diagnosticos cargados desde Bronze (10 filas)
+2026-01-06 02:04:00,105 [INFO] src.transform: Dim_Diagnosticos transformada y guardada en Silver (10 filas)
+2026-01-06 02:04:00,119 [INFO] src.transform: Atenciones cargadas desde Bronze (2 filas)
+2026-01-06 02:04:00,131 [INFO] src.transform: Dim_Calendario generada y guardada en Silver (1 filas)
+2026-01-06 02:04:00,144 [INFO] src.transform: Atenciones transformadas y guardadas en Silver (2 filas)
+2026-01-06 02:04:00,144 [INFO] src.transform: Transformación a Silver finalizada correctamente.
+2026-01-06 02:04:00,228 [INFO] src.connect: Conexión establecida con dw (PRUEBA)
+2026-01-06 02:04:01,215 [INFO] src.load: Tabla staging temporal.stg_dim_pacientes cargada (10 filas)
+2026-01-06 02:04:01,388 [INFO] src.load: Tabla staging temporal.stg_dim_medicos cargada (5 filas)
+2026-01-06 02:04:01,431 [INFO] src.load: Tabla staging temporal.stg_dim_diagnosticos cargada (10 filas)
+2026-01-06 02:04:01,513 [INFO] src.load: Tabla staging temporal.stg_dim_calendario cargada (1 filas)
+2026-01-06 02:04:01,572 [INFO] src.load: Tabla staging temporal.stg_atenciones cargada (2 filas)
+2026-01-06 02:04:30,846 [INFO] __main__: Iniciando ETL desde src/main.py ...
+2026-01-06 02:04:30,846 [INFO] __main__: Extrayendo datos desde 2026-01-05
+2026-01-06 02:04:30,920 [INFO] src.connect: Conexión establecida con oltp (PRUEBA_OLTP)
+2026-01-06 02:04:30,936 [INFO] src.connect: Query ejecutado y DataFrame generado (10 filas)
+2026-01-06 02:04:30,961 [INFO] src.extract: pacientes guardado en Bronze (10 filas)
+2026-01-06 02:04:30,963 [INFO] src.connect: Query ejecutado y DataFrame generado (5 filas)
+2026-01-06 02:04:30,966 [INFO] src.extract: medicos guardado en Bronze (5 filas)
+2026-01-06 02:04:30,966 [INFO] src.connect: Query ejecutado y DataFrame generado (10 filas)
+2026-01-06 02:04:30,966 [INFO] src.extract: diagnosticos guardado en Bronze (10 filas)
+2026-01-06 02:04:30,972 [INFO] src.connect: Query ejecutado y DataFrame generado (2 filas)
+2026-01-06 02:04:30,975 [INFO] src.extract: atenciones guardado en Bronze (2 filas)
+2026-01-06 02:04:30,975 [INFO] src.connect: Conexión cerrada correctamente.
+2026-01-06 02:04:30,975 [INFO] src.extract: Extracción a Bronze finalizada correctamente.
+2026-01-06 02:04:30,991 [INFO] src.transform: Pacientes cargados desde Bronze (10 filas)
+2026-01-06 02:04:31,005 [INFO] src.transform: Dim_Pacientes transformada y guardada en Silver (10 filas)
+2026-01-06 02:04:31,005 [INFO] src.transform: Medicos cargados desde Bronze (5 filas)
+2026-01-06 02:04:31,021 [INFO] src.transform: Dim_Medicos transformada y guardada en Silver (5 filas)
+2026-01-06 02:04:31,026 [INFO] src.transform: Diagnosticos cargados desde Bronze (10 filas)
+2026-01-06 02:04:31,031 [INFO] src.transform: Dim_Diagnosticos transformada y guardada en Silver (10 filas)
+2026-01-06 02:04:31,037 [INFO] src.transform: Atenciones cargadas desde Bronze (2 filas)
+2026-01-06 02:04:31,044 [INFO] src.transform: Dim_Calendario generada y guardada en Silver (1 filas)
+2026-01-06 02:04:31,046 [INFO] src.transform: Atenciones transformadas y guardadas en Silver (2 filas)
+2026-01-06 02:04:31,046 [INFO] src.transform: Transformación a Silver finalizada correctamente.
+2026-01-06 02:04:31,067 [INFO] src.connect: Conexión establecida con dw (PRUEBA)
+2026-01-06 02:04:31,227 [INFO] src.load: Tabla staging temporal.stg_dim_pacientes cargada (10 filas)
+2026-01-06 02:04:31,265 [INFO] src.load: Tabla staging temporal.stg_dim_medicos cargada (5 filas)
+2026-01-06 02:04:31,305 [INFO] src.load: Tabla staging temporal.stg_dim_diagnosticos cargada (10 filas)
+2026-01-06 02:04:31,344 [INFO] src.load: Tabla staging temporal.stg_dim_calendario cargada (1 filas)
+2026-01-06 02:04:31,387 [INFO] src.load: Tabla staging temporal.stg_atenciones cargada (2 filas)
+2026-01-06 02:04:31,443 [INFO] src.connect: Conexión cerrada correctamente.
+2026-01-06 02:04:31,443 [INFO] src.load: Carga incremental finalizada correctamente.
+2026-01-06 02:04:31,443 [INFO] __main__: ✅ ETL finalizado con éxito

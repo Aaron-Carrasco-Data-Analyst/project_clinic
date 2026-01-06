@@ -1,13 +1,13 @@
 import logging
 import pandas as pd
 from sqlalchemy import text
-from src.conexion_sql import ConexionSQL
+from src.connect import ConnectSQL
 from src import log_config
 
 logger = logging.getLogger(__name__)
 
 def load_to_dw():
-    conn = ConexionSQL("dw")
+    conn = ConnectSQL("dw")
     conn.conectar("PRUEBA")
 
     silver_tables = {
@@ -31,7 +31,10 @@ def load_to_dw():
     # DIM_PACIENTES
     insert_pacientes = """
     INSERT INTO diagnosticos_clinica.dim_pacientes (codigo_paciente, sexo, fecha_nacimiento, grupo_edad)
-    SELECT s.codigo_paciente, s.sexo, s.fecha_nacimiento, s.grupo_edad
+    SELECT s.codigo_paciente,
+        s.sexo,
+        s.fecha_nacimiento, 
+        s.grupo_edad
     FROM temporal.stg_dim_pacientes s
     LEFT JOIN diagnosticos_clinica.dim_pacientes d ON d.codigo_paciente = s.codigo_paciente
     WHERE d.codigo_paciente IS NULL;
@@ -105,7 +108,7 @@ WHERE f.id_fact IS NULL;
     with conn.engine.begin() as connection:
         connection.execute(text(insert_fact))
 
-    conn.cerrar_conexion()
+    conn.close_connection()
     logger.info("Carga incremental finalizada correctamente.")
 
 if __name__ == "__main__":

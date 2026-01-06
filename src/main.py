@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 def main():
-    logger.info("🚀 Iniciando ETL desde src/main.py ...")
+    logger.info( "Iniciando ETL desde src/main.py ...")
 
     # Definir fecha_desde: ayer
     fecha_desde = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")

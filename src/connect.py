@@ -12,7 +12,7 @@ from src import log_config  # esto inicializa logging al importar
 dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
 load_dotenv(dotenv_path)
 
-class ConexionSQL:
+class ConnectSQL:
     def __init__(self, tipo: str) -> None:
         self.tipo = tipo.lower()   # "oltp" o "dw"
         self.DRIVER = "ODBC Driver 17 for SQL Server"
@@ -54,7 +54,7 @@ class ConexionSQL:
         self.logger.info("Conexión establecida con %s (%s)", self.tipo, bbdd)
         return self.engine
 
-    def ejecutar_select_a_pd(self, query: str, chunksize: int = None) -> pd.DataFrame:
+    def execute_select_to_pd(self, query: str, chunksize: int = None) -> pd.DataFrame:
         if not self.engine:
             raise ValueError("Engine no inicializado. Llama primero a conectar().")
         df = pd.read_sql_query(sql=query, con=self.engine, chunksize=chunksize)
@@ -64,7 +64,7 @@ class ConexionSQL:
         )
         return df
 
-    def cerrar_conexion(self) -> None:
+    def close_connection(self) -> None:
         if self.engine:
             self.engine.dispose()
             self.engine = None
