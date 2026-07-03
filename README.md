@@ -1,4 +1,4 @@
-## Proyecto ETL – Clínica San Felipe
+## Proyecto ETL
 
 Este proyecto implementa un flujo **ETL** completo para mover datos desde un sistema OLTP hacia un Data Warehouse (DW), siguiendo las capas **Bronze → Silver → Staging → Fact**.
 
